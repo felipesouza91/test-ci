@@ -3,7 +3,7 @@ name: Build Application image
 on:
   push:
     branches:
-      - fix-scripts
+      - fix/dev-scripts
 
 jobs:
   build:
