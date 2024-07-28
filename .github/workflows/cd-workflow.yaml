@@ -24,7 +24,7 @@ jobs:
       run: echo ${GITHUB_SHA::7} >> $env:DOCKER_COMMIT_TAG
 
     - name: Test trag
-      run: echo ${env.DOCKER_COMMIT_TAG}
+      run: cat ${env.DOCKER_COMMIT_TAG}
 
     - name: Login to DockerHub
       uses: docker/login-action@v3
