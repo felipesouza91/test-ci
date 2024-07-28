@@ -27,9 +27,9 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build and push 
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v6  
       with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64  
           push: true
           tags: ${{secrets.DOCKERHUB_USERNAME}}/temvagamestreapi:${{github.sha}},${{secrets.DOCKERHUB_USERNAME}}/temvagamestreapi:latest
