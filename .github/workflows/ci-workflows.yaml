@@ -30,8 +30,8 @@ jobs:
           CLERK_JWT_SECRET_KEY: "kfvbnkfnsdmfnmfpdnmdpfmnmn"
           SECRET_KEY_SESSION: "jnobuidgbnofdiojnarejnmapbnsvmw459obkphonvMVOPGIANBNHORV"
           MONGO_URI: "mongodb://127.0.0.1:27017/rpg-log"
-          DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
-          DATABASE_TEST_URL: "postgres://postgres:postgres@localhost:5432/postgres"
+          DATABASE_URL: "postgres://test:test@localhost:5432/test"
+          DATABASE_TEST_URL: "postgres://test:test@localhost:5432/test"
           PORT: 3000
 
       - name: Stop Containers
