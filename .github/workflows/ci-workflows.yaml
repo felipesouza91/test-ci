@@ -11,9 +11,25 @@ jobs:
     steps:
       - name: Chekout git files
         uses: actions/checkout@v3
-        
-      - name: Start docker to run tests
-        run: docker compose -f ./docker/docker-compose-test.yml up -d
+
+      - uses: benjlevesque/short-sha@v3.0
+        id: short-sha
+        with:
+          length: 7
+
+      - run: echo $SHA
+        env:
+          SHA: ${{ steps.short-sha.outputs.sha }}
+
+      - run: echo $SHA
+        env:
+          SHA: ${{ env.SHA }}
+
+      - name: Run docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          up-flags: "-d"
+          compose-file: "./docker/docker-compose-test.yml"
 
       - name: Use Node.js Version 20.X
         uses: actions/setup-node@v4
@@ -33,6 +49,3 @@ jobs:
           DATABASE_URL: "postgres://test:test@localhost:5432/test"
           DATABASE_TEST_URL: "postgres://test:test@localhost:5432/test"
           PORT: 3000
-
-      - name: Stop Containers
-        run: docker compose -f ./docker/docker-compose-test.yml down
