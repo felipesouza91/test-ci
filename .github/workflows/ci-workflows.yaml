@@ -4,27 +4,15 @@ on:
   pull_request:
     branches:
       - dev
+      - main
 
 jobs:
-  tests: 
+  run-test-ci: 
     runs-on: ubuntu-latest
     steps:
       - name: Chekout git files
         uses: actions/checkout@v3
-
-      - uses: benjlevesque/short-sha@v3.0
-        id: short-sha
-        with:
-          length: 7
-
-      - run: echo $SHA
-        env:
-          SHA: ${{ steps.short-sha.outputs.sha }}
-
-      - run: echo $SHA
-        env:
-          SHA: ${{ env.SHA }}
-
+        
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
@@ -42,10 +30,10 @@ jobs:
       - name: Run tests
         run: npm run test:ci
         env:
-          WEBHOOK_SECRET: "U0dWc2JHOGdWl5YkdRaElRPT0="
-          CLERK_JWT_SECRET_KEY: "kfvbnkfnsdmfnmfpdnmdpfmnmn"
-          SECRET_KEY_SESSION: "jnobuidgbnofdiojnarejnmapbnsvmw459obkphonvMVOPGIANBNHORV"
-          MONGO_URI: "mongodb://127.0.0.1:27017/rpg-log"
-          DATABASE_URL: "postgres://test:test@localhost:5432/test"
-          DATABASE_TEST_URL: "postgres://test:test@localhost:5432/test"
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          CLERK_JWT_SECRET_KEY: ${{ secrets.CLERK_JWT_SECRET_KEY}}
+          SECRET_KEY_SESSION: ${{secrets.SECRET_KEY_SESSION}}
+          MONGO_URI: ${{secrets.MONGO_URI}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          DATABASE_TEST_URL: ${{secrets.DATABASE_TEST_URL}}
           PORT: 3000
