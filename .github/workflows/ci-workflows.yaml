@@ -4,16 +4,20 @@ on:
   pull_request:
     branches:
       - dev
+      - main
 
 jobs:
-  tests: 
+  run-test-ci: 
     runs-on: ubuntu-latest
     steps:
       - name: Chekout git files
         uses: actions/checkout@v3
         
-      - name: Start docker to run tests
-        run: docker compose -f ./docker/docker-compose-test.yml up -d
+      - name: Run docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          up-flags: "-d"
+          compose-file: "./docker/docker-compose-test.yml"
 
       - name: Use Node.js Version 20.X
         uses: actions/setup-node@v4
@@ -26,13 +30,10 @@ jobs:
       - name: Run tests
         run: npm run test:ci
         env:
-          WEBHOOK_SECRET: "U0dWc2JHOGdWl5YkdRaElRPT0="
-          CLERK_JWT_SECRET_KEY: "kfvbnkfnsdmfnmfpdnmdpfmnmn"
-          SECRET_KEY_SESSION: "jnobuidgbnofdiojnarejnmapbnsvmw459obkphonvMVOPGIANBNHORV"
-          MONGO_URI: "mongodb://127.0.0.1:27017/rpg-log"
-          DATABASE_URL: "postgres://test:test@localhost:5432/test"
-          DATABASE_TEST_URL: "postgres://test:test@localhost:5432/test"
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          CLERK_JWT_SECRET_KEY: ${{ secrets.CLERK_JWT_SECRET_KEY}}
+          SECRET_KEY_SESSION: ${{secrets.SECRET_KEY_SESSION}}
+          MONGO_URI: ${{secrets.MONGO_URI}}
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          DATABASE_TEST_URL: ${{secrets.DATABASE_TEST_URL}}
           PORT: 3000
-
-      - name: Stop Containers
-        run: docker compose -f ./docker/docker-compose-test.yml down
